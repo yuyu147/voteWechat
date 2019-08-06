@@ -3,8 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import { Button } from 'vant';
+import { Button, Swipe, SwipeItem } from 'vant';
 Vue.use(Button);
+Vue.use(Swipe).use(SwipeItem);
+
 
 Vue.config.productionTip = false
 

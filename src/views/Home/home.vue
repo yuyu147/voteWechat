@@ -20,31 +20,24 @@
       </div>
     </div>
     <div class="line"></div>
-    <div class="searchAndapply">
-      
-    </div>
+    <!-- 搜索报名 -->
+    <section class="searchAndapply">
+      <van-search placeholder="请输入搜索关键词" v-model="searchValue" />
+    </section>
   </div>
 </template>
 
 <script>
 export default {
   name: "home",
-  data() {
+  data () {
     return {
       banner: [
-        {
-          id: 1,
-          img: "http://placehold.it/750x450"
-        },
-        {
-          id: 2,
-          img: "http://placehold.it/750x450/ff3333/ffffff"
-        },
-        {
-          id: 3,
-          img: "http://placehold.it/750x450/eeee00/000000"
-        }
-      ]
+        { id: 1, img: "http://placehold.it/750x450" },
+        { id: 2, img: "http://placehold.it/750x450/ff3333/ffffff" },
+        { id: 3, img: "http://placehold.it/750x450/eeee00/000000" }
+      ],
+      searchValue: ''
     };
   },
   components: {}
@@ -58,9 +51,9 @@ body {
   /deep/ .van-swipe {
     height: 400px;
     .van-swipe-item {
-      height: 400px;
+      height: 100%;
       img {
-        height: 400px;
+        height: 100%;
       }
     }
   }
@@ -92,6 +85,8 @@ body {
   .line {
     height: 15px;
     background-color: #f9f9f9;
+  }
+  .van-search {
   }
 }
 #home .statistics .statiItem:nth-last-child(1) {

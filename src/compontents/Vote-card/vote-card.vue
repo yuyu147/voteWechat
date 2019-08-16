@@ -18,23 +18,26 @@ import { generalVote } from "@/api/api.js";
 export default {
   name: 'vote-card',
   components: { Toast },
-  props: ['avatar', 'player_name', 'player_num', 'total_votes', 'index'],
+  props: ['avatar', 'player_name', 'player_id', 'total_votes', 'index'],
   data () {
     return {
-      tShow: false
+      tShow: false,
+      info: {}
     }
   },
   methods: {
     toDetail () {
-      this.$router.push('detail/1')
+      this.$router.push(`detail/${this.player_id}`)
     },
     async generalVote () {
       let params = {
-        player_id: this.player_num,
+        player_id: this.player_id,
         useUser: true
       }
-      let res = await generalVote(params)
-      if (res.code) this.tShow = true
+      try {
+        let res = await generalVote(params)
+        this.tShow = true
+      } catch{ }
     }
   }
 }

@@ -63,11 +63,11 @@
       <vote-card
         :avatar="item.avatar"
         :player_name="item.player_name"
-        :player_num="item.player_num"
+        :player_id="item.player_id"
         :total_votes="item.total_votes"
-        :index="index"
-        v-for="(item,index) in playerList"
-        :key="item.player_num"
+        :index="item.entries_votes"
+        v-for="item in playerList"
+        :key="item.player_id"
       ></vote-card>
     </section>
   </div>
@@ -75,7 +75,7 @@
 
 <script>
 import voteCard from '@/compontents/Vote-card/vote-card.vue'
-import { index, rotaryplantingmap, playerList } from "@/api/api.js";
+import { index, rotaryplantingmap, playerList, thirdIndex } from "@/api/api.js";
 export default {
   name: "home",
   data () {
@@ -92,8 +92,15 @@ export default {
     this.getIndex()
     this.getRotaryplantingmap()
     this.getPlayerList()
+    this.thirdIndex()
   },
   methods: {
+    /* 公众号登陆 */
+    thirdIndex () {
+      thirdIndex().then(res => {
+        console.log(res);
+      })
+    },
     /* 获取首页数据 */
     async getIndex () {
       let res = await index()

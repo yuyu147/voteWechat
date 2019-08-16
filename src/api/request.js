@@ -1,17 +1,12 @@
 import axios from 'axios'
 import { Notify } from 'vant';
-import router from "@/router";
 import qs from "querystring";
+import store from "../store";
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 5000
 })
-
-const tempParams = {
-  admin_id: 2,
-  vote_id: 3
-}
 
 /* 请求拦截器 */
 service.interceptors.request.use(
@@ -24,7 +19,7 @@ service.interceptors.request.use(
       }
 
       config.data = qs.stringify({
-        ...tempParams,
+        ...store.getters.sceneInfo,
         ...config.data
       })
 
@@ -34,12 +29,9 @@ service.interceptors.request.use(
         delete tempData.useUser
         config.data = qs.stringify({
           ...tempData,
-          user_id: 6657,
-          mobile: '15269408888',
-          avatar: 'https://vote.gouwanmei.wang/uploads/20190731/385d32fe0310083e70e45f2c78fa5fa1.jpg'
+          ...store.getters.userInfo
         })
       }
-
     }
     return config
   },

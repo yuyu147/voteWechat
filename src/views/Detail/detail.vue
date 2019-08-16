@@ -3,23 +3,23 @@
     <!-- toast -->
     <toast :show="tShow" type="投票" @close="tShow = false"></toast>
     <section class="user-info">
-      <van-image class="avatar" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
+      <van-image class="avatar" round :src="info.avatar" />
       <div class="right">
         <p class="title">
-          <span class="number">1</span>
-          <span class="name">chenxu</span>
+          <span class="number">{{info.ranking}}</span>
+          <span class="name">{{info.player_name}}</span>
         </p>
         <div class="item-box">
           <div class="item">
-            <span class="one">2933</span>
+            <span class="one">{{info.entries_votes}}</span>
             <span class="two">当前票数</span>
           </div>
           <div class="item">
-            <span class="one">20</span>
+            <span class="one">{{info.ranking}}</span>
             <span class="two">排名</span>
           </div>
           <div class="item">
-            <span class="one">63</span>
+            <span class="one">{{info.disparity}}</span>
             <span class="two">距上一名还差</span>
           </div>
         </div>
@@ -28,30 +28,75 @@
     <div class="line"></div>
     <!-- 中心富文本 -->
     <div class="center">
-      <p class="title">作品名称</p>
+      <p class="title">{{info.entriesname}}</p>
       <p class="text">
-        这就是鹿城的西街，一条沉淀着秦风楚韵的怀古街道，一条折射着现代时尚的商业街道，一条流淌着风情民俗的休闲街道。
-        这条有着秦岭一般的襟怀街道，豪迈着鹿城历史的万千往事，书写了诗一般的传奇故事，洗尽铅华之后，又被丹水谱成如歌般的倾城恋曲，翩跹着她的矜持、时尚、风情、休闲的时代旋律。许多人来到西街，便会赏心一段秦岭的山河壮美，悦目一段鹿城的现代芳华，倾城一段西街的无悔过往。
+        {{info.entriesdes}}
+        <van-image v-for="(item,index) in info.entriesimgs" :key="index" width="100%" :src="item" />
       </p>
     </div>
     <div class="detail-bottom">
-      <van-button @click="tShow = true" icon="like" block type="primary">立即投票</van-button>
+      <van-button @click="generalVote" icon="like" block type="primary">立即投票</van-button>
     </div>
     <!-- 礼物 -->
-    <gif-box class="gif-box"></gif-box>
-    <hubble class="hubble"></hubble>
+    <gif-box :player_id="this.$route.params.id" class="gif-box"></gif-box>
+    <div ref="menuWrapper" class="hubble-box">
+      <div class="scroll-box">
+        <hubble v-for="item in 10" :key="item" class="hubble"></hubble>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import gifBox from "@/compontents/Gif-box/Gif-box.vue";
 import Hubble from "@/compontents/Hubble/hubble.vue";
 import Toast from "@/compontents/Toast/toast.vue";
+import { generalVote, entriesDetails } from "@/api/api.js";
+import BScroll from 'better-scroll'
 export default {
   name: 'detail',
   components: { gifBox, Hubble, Toast },
   data () {
     return {
-      tShow: false
+      menuScroll: Object,
+      tShow: false,
+      info: {}
+    }
+  },
+  created () {
+    this.entriesDetails()
+  },
+  mounted () {
+    this._initScroll()
+    this.menuScroll.scrollTo(0, -1000, 500000)
+    this.menuScroll.disable()
+  },
+  methods: {
+    _initScroll () {
+      this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+        scrollX: false,
+        scrollY: true,
+      })
+      // this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {})
+    },
+    /* 获取详情信息 */
+    async entriesDetails () {
+      try {
+        let params = {
+          player_id: this.$route.params.id
+        }
+        let res = await entriesDetails(params)
+        this.info = res.data
+      } catch (error) { }
+    },
+    async generalVote () {
+      let params = {
+        player_id: this.$route.params.id,
+        useUser: true
+      }
+      try {
+        let res = await generalVote(params)
+        this.tShow = true
+      } catch{ }
     }
   }
 }
@@ -104,6 +149,7 @@ export default {
       }
     }
     .number {
+      vertical-align: top;
       margin-right: 20px;
       display: inline-block;
       text-align: center;
@@ -161,9 +207,18 @@ export default {
   right: 40px;
   bottom: 150px;
 }
-.hubble {
+.hubble-box {
+  .scroll-box {
+    // height: 1000px;
+    padding-left: 20px;
+  }
   position: fixed !important;
   left: 40px;
   bottom: 300px;
+  overflow: hidden;
+  height: 200px;
+  .hubble {
+    margin-top: 20px;
+  }
 }
 </style>

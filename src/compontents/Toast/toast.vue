@@ -1,6 +1,6 @@
 <template>
   <div id="toast">
-    <van-dialog @close="$emit('close')" v-model="show" :title="'恭喜'+type+'成功'">
+    <van-dialog @close="toHome" v-model="show" :title="'恭喜'+type+'成功'">
       <img class="dianzan" src="../../assets/images/dianzhan.png" alt />
     </van-dialog>
   </div>
@@ -8,7 +8,15 @@
 <script>
 export default {
   name: 'toast',
-  props: ['show', 'type']
+  props: ['show', 'type'],
+  methods: {
+    toHome () {
+      if (this.type == '报名') {
+        this.$router.push('/')
+      }
+      this.$emit('close')
+    }
+  }
 }
 
 </script>

@@ -92,14 +92,15 @@ export default {
         }
         return uploadImg(form)
       });
-
-      let imgsRes = await this.$axios.all(axiosArr)
-      imgsRes.forEach(item => {
-        this.form.entriesimg.push(item.data.path)
-      });
-      this.form.entriesimg = this.form.entriesimg.toString()
-      let res = await ctivityRegistration(this.form)
-      this.tShow = true
+      try {
+        let imgsRes = await this.$axios.all(axiosArr)
+        imgsRes.forEach(item => {
+          this.form.entriesimg.push(item.data.path)
+        });
+        this.form.entriesimg = this.form.entriesimg.toString()
+        let res = await ctivityRegistration(this.form)
+        this.tShow = true
+      } catch{ }
     }
   }
 };

@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: './',
   devServer: {
     proxy: {
       '/api': {
@@ -6,9 +7,17 @@ module.exports = {
         ws: false,
         changeOrigin: true,
         pathRewrite: {
-          "^/api": "/"
+          "^/api": "/api"
         }
-      }
+      },
+      '/addons': {
+        target: process.env.VUE_APP_PRO_API,
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/addons": "/addons"
+        }
+      },
     }
   }
 }

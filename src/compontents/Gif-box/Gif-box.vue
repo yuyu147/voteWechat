@@ -4,9 +4,9 @@
     <transition name="slide-fade">
       <div v-show="show" ref="menuWrapper" class="git-roll">
         <div class="scroll-box">
-          <div class="item" v-for="item in 9" :key="item">
-            <img class="gifs-img" src="../../assets/images/kouhong.png" />
-            <p class="price">¥ 10</p>
+          <div @click="sendGifs(item.id)" class="item" v-for="item in gifs" :key="item.id">
+            <img class="gifs-img" :alt="item.giftname" :src="item.gifticon" />
+            <p class="price">¥ {{item.price}}</p>
           </div>
         </div>
       </div>
@@ -15,22 +15,47 @@
 </template>
 <script>
 import BScroll from 'better-scroll'
+import { giftlist, giftVoting } from '@/api/api.js'
 export default {
   name: 'gitBox',
   data () {
     return {
       menuScroll: Object,
-      show: true
+      show: true,
+      gifs: []
     }
   },
+  props: ['player_id'],
+  created () {
+    this.giftlist()
+  },
   methods: {
+    /* 送礼物 */
+    async sendGifs (id) {
+      try {
+        let params = {
+          giftlist_id: id,
+          player_id: this.player_id,
+          useUser: true
+        }
+        let res = await giftVoting(params)
+
+      } catch (error) { }
+    },
+    async giftlist () {
+      try {
+        let res = await giftlist()
+        this.gifs = res.data
+      } catch (error) { }
+    },
     _initScroll () {
       this.menuScroll = new BScroll(this.$refs.menuWrapper, {
         startX: 10,
         scrollX: true,
         scrollY: false,
+        click: true,
+        tap: true
       })
-      // this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {})
     }
   },
   watch: {
@@ -92,9 +117,9 @@ export default {
   }
   .item {
     display: inline-block;
-
+    text-align: center;
     height: 100%;
-    width: 80px;
+    width: 100px;
     .price {
       padding-top: 5px;
       font-size: 20px;

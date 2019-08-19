@@ -100,6 +100,14 @@ export function giftlist (data) {
     data
   })
 }
+/* 礼物列表 */
+export function giveGiftlist (data) {
+  return request({
+    url: '/api/Gifts/giveGiftlist',
+    method: 'post',
+    data
+  })
+}
 
 /* 公众号相关 */
 export function thirdIndex (data) {

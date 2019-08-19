@@ -41,7 +41,15 @@
     <gif-box :player_id="this.$route.params.id" class="gif-box"></gif-box>
     <div ref="menuWrapper" class="hubble-box">
       <div class="scroll-box">
-        <hubble v-for="item in 10" :key="item" class="hubble"></hubble>
+        <hubble
+          v-for="item in gifs"
+          :key="item.id"
+          :avatar="item.avatar"
+          :gifticon="item.gifticon"
+          :numbers="item.numbers"
+          :username="item.username"
+          class="hubble"
+        ></hubble>
       </div>
     </div>
   </div>
@@ -50,7 +58,7 @@
 import gifBox from "@/compontents/Gif-box/Gif-box.vue";
 import Hubble from "@/compontents/Hubble/hubble.vue";
 import Toast from "@/compontents/Toast/toast.vue";
-import { generalVote, entriesDetails } from "@/api/api.js";
+import { generalVote, entriesDetails, giveGiftlist } from "@/api/api.js";
 import BScroll from 'better-scroll'
 export default {
   name: 'detail',
@@ -59,11 +67,13 @@ export default {
     return {
       menuScroll: Object,
       tShow: false,
+      gifs: [],
       info: {}
     }
   },
   created () {
     this.entriesDetails()
+    this.giveGiftlist()
   },
   mounted () {
     this._initScroll()
@@ -75,6 +85,11 @@ export default {
       this.menuScroll = new BScroll(this.$refs.menuWrapper, {
         scrollX: false,
         scrollY: true,
+        snap: {
+          loop: true,
+          threshold: 0.3,
+          speed: 400
+        }
       })
       // this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {})
     },
@@ -96,6 +111,16 @@ export default {
       try {
         let res = await generalVote(params)
         this.tShow = true
+      } catch{ }
+    },
+    /* 获取送礼物的 */
+    async giveGiftlist () {
+      let params = {
+        player_id: this.$route.params.id
+      }
+      try {
+        let res = await giveGiftlist(params)
+        this.gifs = res.data
       } catch{ }
     }
   }

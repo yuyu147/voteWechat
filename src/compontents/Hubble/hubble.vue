@@ -1,14 +1,15 @@
 <template>
   <div id="hubble">
-    <van-image class="avatar" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
-    <span>陈旭送出</span>
-    <img class="gifs-img" src="../../assets/images/kouhong.png" />
-    <span>X2</span>
+    <van-image class="avatar" round :src="avatar" />
+    <span>{{username}}送出</span>
+    <img class="gifs-img" :src="gifticon" />
+    <span>X{{numbers}}</span>
   </div>
 </template>
 <script>
 export default {
-  name: 'hubble'
+  name: 'hubble',
+  props: ['avatar', 'gifticon', 'numbers', 'username']
 }
 </script>
 <style lang="less" scoped>

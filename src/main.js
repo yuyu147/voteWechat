@@ -11,6 +11,9 @@ Vue.use(Swipe).use(SwipeItem).use(Search).use(Button).use(CountDown).use(Icon).u
 Vue.config.productionTip = false
 Vue.prototype.$axios = Axios
 
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
+
 new Vue({
   router,
   store,

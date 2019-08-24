@@ -65,7 +65,7 @@
         :player_name="item.player_name"
         :player_id="item.player_id"
         :total_votes="item.total_votes"
-        :index="item.entries_votes"
+        :index="item.ranking"
         v-for="item in playerList"
         :key="item.player_id"
       ></vote-card>
@@ -95,11 +95,19 @@ export default {
     this.thirdIndex()
   },
   methods: {
-    /* 公众号登陆 */
+    /* 获取用户信息 */
     thirdIndex () {
-      thirdIndex().then(res => {
-        console.log(res);
-      })
+      let userInfo = {
+        user_id: this.$cookies.get('uid'),
+        avatar: this.$cookies.get('avatar')
+      }
+      let sceneInfo = {
+        admin_id: this.$cookies.get('admin_id'),
+        vote_id: this.$cookies.get('vote_id')
+      }
+      console.log(userInfo, sceneInfo);
+      // this.$store.commit('setUserInfo')
+
     },
     /* 获取首页数据 */
     async getIndex () {

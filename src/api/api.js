@@ -109,6 +109,14 @@ export function giveGiftlist (data) {
   })
 }
 
+export function buying_gifts (data) {
+  return request({
+    url: '/api/Gifts/buying_gifts',
+    method: 'post',
+    data
+  })
+}
+
 /* 公众号相关 */
 export function thirdIndex (data) {
   return request({

@@ -1,5 +1,7 @@
 module.exports = {
+  publicPath: './',
   devServer: {
+    disableHostCheck: true,
     proxy: {
       '/api': {
         target: process.env.VUE_APP_PRO_API,

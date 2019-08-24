@@ -15,7 +15,7 @@
 </template>
 <script>
 import BScroll from 'better-scroll'
-import { giftlist, giftVoting } from '@/api/api.js'
+import { giftlist, giftVoting, buying_gifts } from '@/api/api.js'
 export default {
   name: 'gitBox',
   data () {
@@ -38,9 +38,22 @@ export default {
           player_id: this.player_id,
           useUser: true
         }
+        console.log(id);
+        /* 先支付 */
+        let payParams = {
+          ...this.$store.getters.sceneInfo,
+          gift_id: id,
+          player_id: this.player_id,
+          useUser: true,
+          gift_num: 1,
+          pay_type: 'wechat'
+        }
+        let payRes = await buying_gifts(payParams)
         let res = await giftVoting(params)
 
-      } catch (error) { }
+      } catch (error) {
+        console.log(error);
+      }
     },
     async giftlist () {
       try {

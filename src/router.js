@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home/home'
+import { cookieToStore } from "@/main";
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
@@ -35,3 +36,10 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  cookieToStore()
+  next()
+})
+
+export default router

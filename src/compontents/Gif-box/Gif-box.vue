@@ -1,10 +1,21 @@
 <template>
   <div id="gif-box">
+    <!-- 选择数量页面 -->
+    <van-dialog
+      :showConfirmButton="true"
+      :showCancelButton="true"
+      v-model="numShow"
+      :confirm="sendGifs"
+      title="选择数量"
+      show-cancel-button
+    >
+      <van-stepper v-model="gifNum" />
+    </van-dialog>
     <img @click="show = !show" class="gif" src="../../assets/images/gif.png" alt />
     <transition name="slide-fade">
       <div v-show="show" ref="menuWrapper" class="git-roll">
         <div class="scroll-box">
-          <div @click="sendGifs(item.id)" class="item" v-for="item in gifs" :key="item.id">
+          <div @click="beforeSendGifs(item.id)" class="item" v-for="item in gifs" :key="item.id">
             <img class="gifs-img" :alt="item.giftname" :src="item.gifticon" />
             <p class="price">¥ {{item.price}}</p>
           </div>
@@ -20,6 +31,9 @@ export default {
   name: 'gitBox',
   data () {
     return {
+      numShow: false,
+      giftNum: 1,
+      giftId: '',
       menuScroll: Object,
       show: true,
       gifs: []
@@ -30,26 +44,30 @@ export default {
     this.giftlist()
   },
   methods: {
+    beforeSendGifs (id) {
+      this.giftId = id
+      this.numShow = true
+    },
     /* 送礼物 */
-    async sendGifs (id) {
+    async sendGifs () {
       try {
         let params = {
-          giftlist_id: id,
+          giftlist_id: this.giftId,
           player_id: this.player_id,
           useUser: true
         }
-        console.log(id);
         /* 先支付 */
         let payParams = {
           ...this.$store.getters.sceneInfo,
-          gift_id: id,
+          gift_id: this.giftId,
           player_id: this.player_id,
           useUser: true,
-          gift_num: 1,
+          gift_num: this.giftNum,
           pay_type: 'wechat'
         }
         let payRes = await buying_gifts(payParams)
-        let res = await giftVoting(params)
+        window.location.href = payRes.data.url
+        // let res = await giftVoting(params)
 
       } catch (error) {
         console.log(error);
@@ -82,6 +100,17 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+/* 数量框 */
+/deep/.van-dialog__content {
+  -webkit-transform: scale(2);
+  padding: 40px;
+}
+/deep/.van-dialog__header {
+  -webkit-transform: scale(1.2);
+}
+/deep/.van-dialog__footer {
+  -webkit-transform: scale(1.2);
+}
 #gif-box {
   height: 100px;
   width: 100px;

@@ -6,12 +6,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userInfo: {
-      user_id: 6657,
-      avatar: '/uploads/20190816/764e1876006f46a40fc52184caf397a2.png'
+      user_id: '',
+      avatar: ''
     },
     sceneInfo: {
-      admin_id: 2,
-      vote_id: 3
+      admin_id: '',
+      vote_id: ''
     }
   },
   getters: {

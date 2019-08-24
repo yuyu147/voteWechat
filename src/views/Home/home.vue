@@ -76,6 +76,7 @@
 <script>
 import voteCard from '@/compontents/Vote-card/vote-card.vue'
 import { index, rotaryplantingmap, playerList, thirdIndex } from "@/api/api.js";
+import { cookieToStore } from "@/main";
 export default {
   name: "home",
   data () {
@@ -92,23 +93,9 @@ export default {
     this.getIndex()
     this.getRotaryplantingmap()
     this.getPlayerList()
-    this.thirdIndex()
+    cookieToStore()
   },
   methods: {
-    /* 获取用户信息 */
-    thirdIndex () {
-      let userInfo = {
-        user_id: this.$cookies.get('uid'),
-        avatar: this.$cookies.get('avatar')
-      }
-      let sceneInfo = {
-        admin_id: this.$cookies.get('admin_id'),
-        vote_id: this.$cookies.get('vote_id')
-      }
-      console.log(userInfo, sceneInfo);
-      // this.$store.commit('setUserInfo')
-
-    },
     /* 获取首页数据 */
     async getIndex () {
       let res = await index()

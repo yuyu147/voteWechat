@@ -36,6 +36,7 @@ export default {
       }
       try {
         let res = await generalVote(params)
+        this.total_votes += 1
         this.tShow = true
       } catch{ }
     }
@@ -45,13 +46,14 @@ export default {
 
 <style lang="less" scoped>
 #vote-card {
-  height: 400px;
-  width: 300px;
+  height: 450px;
+  // width: 300px;
+  width: 47%;
 }
 
 .vote-img {
   width: 100%;
-  height: 284px;
+  height: calc(100% - 116px);
   vertical-align: top;
 }
 .vote-footer {

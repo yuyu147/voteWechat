@@ -5,11 +5,11 @@
       :showConfirmButton="true"
       :showCancelButton="true"
       v-model="numShow"
-      :confirm="sendGifs"
+      @confirm="sendGifs"
       title="选择数量"
       show-cancel-button
     >
-      <van-stepper v-model="gifNum" />
+      <van-stepper v-model="giftNum" />
     </van-dialog>
     <img @click="show = !show" class="gif" src="../../assets/images/gif.png" alt />
     <transition name="slide-fade">
@@ -103,13 +103,25 @@ export default {
 /* 数量框 */
 /deep/.van-dialog__content {
   -webkit-transform: scale(2);
-  padding: 40px;
+  padding: 100px;
 }
 /deep/.van-dialog__header {
   -webkit-transform: scale(1.2);
 }
 /deep/.van-dialog__footer {
   -webkit-transform: scale(1.2);
+  height: 60px;
+  line-height: 60px;
+}
+/deep/.van-stepper__minus:before,
+/deep/ .van-stepper__plus:before {
+  height: 2px;
+  transform: translate(0, -1px);
+}
+/deep/.van-stepper__minus::after,
+/deep/.van-stepper__plus::after {
+  width: 2px;
+  transform: translate(1px, 0);
 }
 #gif-box {
   height: 100px;

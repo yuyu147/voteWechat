@@ -2,6 +2,7 @@
   <div id="detail">
     <!-- toast -->
     <toast :show="tShow" type="投票" @close="tShow = false"></toast>
+    <toast :show="tShow1" type="送礼" @close="tShow1 = false"></toast>
     <section class="user-info">
       <van-image class="avatar" round :src="info.avatar" />
       <div class="right">
@@ -67,6 +68,7 @@ export default {
     return {
       menuScroll: Object,
       tShow: false,
+      tShow1: false,
       gifs: [],
       info: {}
     }
@@ -74,13 +76,23 @@ export default {
   created () {
     this.entriesDetails()
     this.giveGiftlist()
+    if (this.$route.query.state) {
+      this.tShow1 = true
+    }
   },
   mounted () {
     this._initScroll()
-    this.menuScroll.scrollTo(0, -1000, 500000)
+    this.menuScroll.scrollTo(0, -500, 50000, 'linear')
     this.menuScroll.disable()
+    this.scrollEnd()
   },
   methods: {
+    /* x循环滚动，这个插件是真的垃圾 */
+    scrollEnd () {
+      this.menuScroll.on('scrollEnd', () => {
+        this.menuScroll.scrollTo(0, -500, 50000, 'linear')
+      })
+    },
     _initScroll () {
       this.menuScroll = new BScroll(this.$refs.menuWrapper, {
         scrollX: false,
@@ -111,6 +123,7 @@ export default {
       try {
         let res = await generalVote(params)
         this.tShow = true
+        this.info.entries_votes += 1
       } catch{ }
     },
     /* 获取送礼物的 */

@@ -144,12 +144,16 @@ export default {
     line-height: 45px;
     width: 200px;
   }
+  .van-field__control {
+    line-height: 40px;
+  }
 }
 .text-area {
   height: 240px;
   /deep/.van-field__control {
-    line-height: 20px;
+    line-height: 36px;
     padding-top: 10px;
+    height: 240px;
   }
 }
 /deep/.van-uploader__preview-image {

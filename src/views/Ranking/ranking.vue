@@ -49,8 +49,8 @@ export default {
 }
 .img-box {
   .ranking-img {
-    width: 348px;
-    height: 264px;
+    width: 650px;
+    height: 315px;
   }
 }
 .title {

@@ -1,7 +1,7 @@
 <template>
   <div id="vote-card">
     <!-- toast -->
-    <toast :show="tShow" type="投票" @close="tShow = false"></toast>
+    <toast :show="tShow" @close="success" type="投票"></toast>
     <van-image @click="toDetail" class="vote-img" lazy-load :src="avatar" />
     <div class="vote-footer">
       <p class="info">
@@ -26,6 +26,11 @@ export default {
     }
   },
   methods: {
+    /* 传给 首页 */
+    success () {
+      this.tShow = false
+      this.$emit('success')
+    },
     toDetail () {
       this.$router.push(`detail/${this.player_id}`)
     },
@@ -36,7 +41,6 @@ export default {
       }
       try {
         let res = await generalVote(params)
-        this.total_votes += 1
         this.tShow = true
       } catch{ }
     }

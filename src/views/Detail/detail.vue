@@ -1,8 +1,8 @@
 <template>
   <div id="detail">
     <!-- toast -->
-    <toast :show="tShow" type="投票" @close="tShow = false"></toast>
-    <toast :show="tShow1" type="送礼" @close="tShow1 = false"></toast>
+    <toast :show="tShow" type="投票" @close="reload"></toast>
+    <toast :show="tShow1" type="送礼" @close="reload(1)"></toast>
     <section class="user-info">
       <van-image class="avatar" round :src="info.avatar" />
       <div class="right">
@@ -87,6 +87,16 @@ export default {
     this.scrollEnd()
   },
   methods: {
+    reload (type) {
+      if (type) {
+        this.tShow1 = false
+        this.entriesDetails()
+      } else {
+        this.tShow = false
+        this.entriesDetails()
+      }
+
+    },
     /* x循环滚动，这个插件是真的垃圾 */
     scrollEnd () {
       this.menuScroll.on('scrollEnd', () => {
@@ -96,12 +106,7 @@ export default {
     _initScroll () {
       this.menuScroll = new BScroll(this.$refs.menuWrapper, {
         scrollX: false,
-        scrollY: true,
-        snap: {
-          loop: true,
-          threshold: 0.3,
-          speed: 400
-        }
+        scrollY: true
       })
       // this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {})
     },
@@ -123,7 +128,6 @@ export default {
       try {
         let res = await generalVote(params)
         this.tShow = true
-        this.info.entries_votes += 1
       } catch{ }
     },
     /* 获取送礼物的 */
@@ -236,7 +240,7 @@ export default {
       rgba(253, 113, 90, 1) 0%,
       rgba(247, 71, 109, 1) 100%
     );
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0;
   }
 }
 /* gif position */
@@ -246,15 +250,16 @@ export default {
   bottom: 150px;
 }
 .hubble-box {
-  .scroll-box {
-    // height: 1000px;
-    padding-left: 20px;
-  }
-  position: fixed !important;
+  pointer-events: none;
+  position: absolute;
   left: 40px;
   bottom: 300px;
   overflow: hidden;
   height: 200px;
+  .scroll-box {
+    // height: 1000px;
+    padding-left: 20px;
+  }
   .hubble {
     margin-top: 20px;
   }

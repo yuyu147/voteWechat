@@ -77,30 +77,53 @@ export default {
     this.ctivityRegistrationType()
   },
   methods: {
+    /* 表单验证 */
+    checkForm () {
+      if (!this.form.player_name) {
+        this.$notify('参赛者名字不能为空！')
+        return false
+      }
+      if (!this.form.entriesname) {
+        this.$notify('作品名字不能为空！')
+        return false
+      }
+      if (!this.form.entriesdes) {
+        this.$notify('作品简介不能为空！')
+        return false
+      }
+      if (!(/^1[3456789]\d{9}$/.test(this.form.player_phone))) {
+        this.$notify('手机号格式不正确')
+        return false;
+      }
+      return true
+    },
     /* 判断是否有活动 */
     async ctivityRegistrationType () {
       let res = await ctivityRegistrationType()
       this.entries_type = res.data.entries_type
     },
     async upup () {
-      /* 统一上传 */
-      let axiosArr = this.imgList.map(element => {
-        let form = new FormData()
-        form.append('image', element.file)
-        let param = {
-          'image': form.get('image')
-        }
-        return uploadImg(form)
-      });
-      try {
-        let imgsRes = await this.$axios.all(axiosArr)
-        imgsRes.forEach(item => {
-          this.form.entriesimg.push(item.data.path)
+      /* 表单验证 */
+      if (this.checkForm()) {
+        /* 统一上传 */
+        let axiosArr = this.imgList.map(element => {
+          let form = new FormData()
+          form.append('image', element.file)
+          let param = {
+            'image': form.get('image')
+          }
+          return uploadImg(form)
         });
-        this.form.entriesimg = this.form.entriesimg.toString()
-        let res = await ctivityRegistration(this.form)
-        this.tShow = true
-      } catch{ }
+        try {
+          let imgsRes = await this.$axios.all(axiosArr)
+          imgsRes.forEach(item => {
+            this.form.entriesimg.push(item.data.path)
+          });
+          this.form.entriesimg = this.form.entriesimg.toString()
+          let res = await ctivityRegistration(this.form)
+          this.tShow = true
+        } catch{ }
+      }
     }
   }
 };

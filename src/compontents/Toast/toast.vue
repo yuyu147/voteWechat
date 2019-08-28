@@ -8,7 +8,7 @@
 <script>
 export default {
   name: 'toast',
-  props: ['show', 'type'],
+  props: ['show', 'type', 'url'],
   methods: {
     toHome () {
       if (this.type == '报名') {

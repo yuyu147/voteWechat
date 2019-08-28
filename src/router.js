@@ -15,6 +15,12 @@ const router = new Router({
       component: Home
     },
     {
+      path: '/home',
+      redirect: '/',
+      name: 'home-two',
+      component: Home
+    },
+    {
       path: '/rule',
       name: 'rule',
       component: () => import('@/views/Rule/rule')

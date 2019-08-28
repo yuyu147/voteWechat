@@ -68,6 +68,7 @@
         :index="item.ranking"
         v-for="item in playerList"
         :key="item.player_id"
+        @success="success"
       ></vote-card>
     </section>
   </div>
@@ -96,6 +97,12 @@ export default {
     cookieToStore()
   },
   methods: {
+    /* 投票成功，刷新页面 */
+    success () {
+      this.getIndex()
+      this.getRotaryplantingmap()
+      this.getPlayerList()
+    },
     /* 获取首页数据 */
     async getIndex () {
       let res = await index()

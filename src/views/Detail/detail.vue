@@ -251,7 +251,7 @@ export default {
 }
 .hubble-box {
   pointer-events: none;
-  position: absolute;
+  position: fixed;
   left: 40px;
   bottom: 300px;
   overflow: hidden;

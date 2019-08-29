@@ -48,8 +48,10 @@ export default {
   padding: 18px;
 }
 .img-box {
+  width: 100%;
+  padding: 30px;
   .ranking-img {
-    width: 650px;
+    width: 100%;
     height: 315px;
   }
 }
